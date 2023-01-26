@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora</title>
+  <style>
+    /* Estiliza o formulário */
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      margin-bottom: 8px;
+    }
+
+    input[type="number"] {
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      width: 60%;
+    }
+
+    button[type="button"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      border: none;
+      cursor: pointer;
+      width: 20%;
+    }
+
+    button[type="button"]:hover {
+      background-color: #3e8e41;
+    }
+
+    /* Estiliza a tabela */
+    table {
+      width: 90%;
+      border-collapse: collapse;
+      margin: auto;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+    th, td {
+        font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+  <form>
+    <label for="bancaInicial">Banca Inicial</label>
+    <input type="number" step="0.01"  id="bancaInicial" name="bancaInicial">
+    
+    <label for="oddEncontrada">odd Encontrada</label>
+    <input type="number" step="0.01" id="oddEncontrada" name="oddEncontrada">
+    
+    <label for="oddJustaEncontrada">odd Justa Encontrada</label>
+    <input type="number" step="0.01" id="oddJustaEncontrada" name="oddJustaEncontrada">
+    
+    <button type="button" onclick="calculate()">Calcular</button>
+  </form>
+  
+  <table border="1">
+    <tr>
+      <th>Variaveis</th>
+      <th>Valores</th>
+    </tr>
+    <tr>
+      <td>odd Justa Ajustada</td>
+      <td id="oddJustaAjustada"></td>
+    </tr>
+    <tr>
+      <td>% diferença</td>
+      <td id="percentualDiferenca"></td>
+    </tr>
+    <tr>
+      <td>Aposta Viável?</td>
+      <td id="apostaViavel"></td>
+    </tr>
+    <tr>
+      <td>B = Probabilidades decimais - 1 </td>
+      <td id="b"></td>
+    </tr>
+    <tr>
+      <td>P = Probabilidade de sucesso </td>
+      <td id="p"></td>
+    </tr>
+    <tr>
+      <td>Q = probabilidade de fracasso (1-P) </td>
+      <td id="q"></td>
+    </tr>
+    <tr>
+      <td>(BP-Q)/B</td>
+      <td id="bpqb"></td>
+    </tr>
+    <tr>
+      <td>Percentual a ser apostado</td>
+      <td id="percentualApostado"></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td id="c5"></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td id="c4"></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td id="c3"></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td id="c2"></td>
+    </tr>
+    <tr>
+      <td>Valor a ser apostado</td>
+      <td id="valorApostado"></td>
+    </tr>
+  </table>
+  <script>
+      function calculate() {
+        // pegar valores dos campos de entrada
+        var bancaInicial = document.getElementById("bancaInicial").value;
+        var oddEncontrada = document.getElementById("oddEncontrada").value;
+        var oddJustaEncontrada = document.getElementById("oddJustaEncontrada").value;
+        var oddJustaAjustada = oddJustaEncontrada / 0.93;
+        var percentualDiferenca = (oddEncontrada - oddJustaAjustada) / oddJustaAjustada ;
+
+        // calcular valores usando a fórmula do Critério de Kelly
+        var B = oddEncontrada - 1;
+        var P = 100 / oddJustaAjustada;
+        var Q = 1 - (P/100);
+        var f = (B *(P/100) - Q) / B;
+        var percentualSeraApostado = Math.trunc((((oddEncontrada - 1) * (P/100))-(1-(P/100)))/(oddEncontrada-1) * 100);
+
+        apostaViavel =  percentualDiferenca > 0.07 ? 'Sim' : 'Não';
+
+        // atualizar elementos da tabela com os valores calculados
+        document.getElementById("oddJustaAjustada").innerHTML = (oddJustaAjustada).toFixed(3);
+        document.getElementById("percentualDiferenca").innerHTML = (Math.round(percentualDiferenca * 100)).toFixed(2)+"%";
+        document.getElementById("b").innerHTML = (B).toFixed(3);
+        document.getElementById("p").innerHTML = (P).toFixed(2);
+        document.getElementById("q").innerHTML = (Q).toFixed(2);
+        document.getElementById("bpqb").innerHTML = (f).toFixed(2);
+        document.getElementById("apostaViavel").innerHTML = apostaViavel;
+        document.getElementById("percentualApostado").innerHTML = (percentualSeraApostado).toFixed(2)+"%";
+        document.getElementById("c5").innerHTML = (percentualSeraApostado/5).toFixed(2)+"%";
+        document.getElementById("c4").innerHTML = (percentualSeraApostado/4).toFixed(2)+"%";
+        document.getElementById("c3").innerHTML = (percentualSeraApostado/3).toFixed(2)+"%";
+        document.getElementById("c2").innerHTML = (percentualSeraApostado/2).toFixed(2)+"%";
+        document.getElementById("valorApostado").innerHTML = (bancaInicial*(percentualSeraApostado / 100)).toFixed(2);
+
+    }
+  </script>
+</body>
+</html>

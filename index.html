@@ -2,7 +2,13 @@
 <html>
 <head>
   <title>Calculadora</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    /* estilos para telas grandes */
+    body {
+      font-size: 16px;
+    }
+   
     /* Estiliza o formulário */
     form {
       display: flex;
@@ -23,7 +29,7 @@
     button[type="button"] {
       background-color: #4CAF50;
       color: white;
-      padding: 14px 20px;
+      padding: 14px 10px;
       margin-bottom: 20px;
       border: none;
       cursor: pointer;
@@ -52,6 +58,16 @@
     }
     th, td {
         font-size: 0.8em;
+    }
+    /* estilos para telas pequenas */
+    @media only screen and (max-width: 600px) {
+      table {
+        width: 100%;
+      }
+
+      body {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
